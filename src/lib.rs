@@ -28,13 +28,15 @@ pub struct Validator {
 }
 
 impl Validator {
-	async fn new() -> Result<Validator, KeyFetchError> {
+	pub async fn new() -> Result<Validator, KeyFetchError> {
 		Ok(Validator {
 			keys: fetch_apple_keys().await?,
 		})
 	}
 
-	fn from_keys(keys: HashMap<String, KeyComponents>) -> Validator {
+	pub fn from_keys(
+		keys: HashMap<String, KeyComponents>,
+	) -> Validator {
 		Validator { keys }
 	}
 }
