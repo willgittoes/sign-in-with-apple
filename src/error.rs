@@ -3,7 +3,7 @@
 use thiserror::Error;
 
 #[derive(Error, Debug)]
-pub enum KeyFetchError {
+pub enum ValidatorCreateError {
 	#[error("hyper error: {0}")]
 	Hyper(#[from] hyper::Error),
 	#[error("http error: {0}")]
@@ -12,6 +12,20 @@ pub enum KeyFetchError {
 	AppleKeys,
 	#[error("serde_json error: {0}")]
 	SerdeJson(#[from] serde_json::Error),
+	#[error("jsonwebtoken key error: {0}")]
+	KeyError(#[from] jsonwebtoken::errors::Error),
+}
+
+#[derive(Error, Debug)]
+pub enum ValidateCodeError {
+	#[error("Error response from apple: {0}: {1}")]
+	ErrorResponse(String, String),
+}
+
+#[derive(Error, Debug)]
+pub enum ValidateRefreshTokenError {
+	#[error("Error response from apple: {0}: {1}")]
+	ErrorResponse(String, String),
 }
 
 #[derive(Error, Debug)]
