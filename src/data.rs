@@ -18,13 +18,13 @@ pub struct KeyComponents {
 pub struct Claims {
 	pub iss: String,
 	pub aud: String,
-	pub exp: i32,
-	pub iat: i32,
+	pub exp: u64,
+	pub iat: u64,
 	pub sub: String,
 	pub c_hash: String,
 	pub email: Option<String>,
 	pub email_verified: Option<String>,
-	pub auth_time: i32,
+	pub auth_time: u64,
 }
 
 /// see <https://developer.apple.com/documentation/sign_in_with_apple/processing_changes_for_sign_in_with_apple_accounts>

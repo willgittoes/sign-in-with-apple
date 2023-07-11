@@ -14,7 +14,7 @@ mod error;
 pub use data::{Claims, ClaimsServer2Server};
 
 use data::{KeyComponents, APPLE_ISSUER, APPLE_PUB_KEYS};
-use error::{ValidateCodeError, ValidateRefreshTokenError};
+pub use error::{ValidateCodeError, ValidateRefreshTokenError};
 pub use error::{ValidationError, ValidatorCreateError};
 use hyper::{body, Body, Client, Request};
 use hyper_tls::HttpsConnector;
@@ -109,10 +109,10 @@ impl Validator {
 	/// decoe token with optional expiry validation
 	pub async fn decode_token<T: DeserializeOwned>(
 		&self,
-		token: String,
+		token: &str,
 		ignore_expire: bool,
 	) -> Result<TokenData<T>, ValidationError> {
-		let header = decode_header(token.as_str())?;
+		let header = decode_header(token)?;
 
 		let kid = match header.kid {
 			Some(k) => k,
@@ -127,7 +127,7 @@ impl Validator {
 		let mut val = Validation::new(header.alg);
 		val.validate_exp = !ignore_expire;
 		let token_data = decode::<T>(
-			token.as_str(),
+			token,
 			&DecodingKey::from_rsa_components(&pubkey.n, &pubkey.e)
 				.unwrap(),
 			&val,
@@ -138,7 +138,7 @@ impl Validator {
 
 	pub async fn validate_jwt(
 		&self,
-		token: String,
+		token: &str,
 		ignore_expire: bool,
 	) -> Result<TokenData<Claims>, ValidationError> {
 		let token_data =
