@@ -14,7 +14,7 @@ pub struct KeyComponents {
 	pub e: String,     // "AQAB"
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq, Debug)]
 #[serde(untagged)]
 enum EmailVerified {
 	String(String),
