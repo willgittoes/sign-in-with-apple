@@ -14,6 +14,13 @@ pub struct KeyComponents {
 	pub e: String,     // "AQAB"
 }
 
+#[derive(Deserialize, Serialize)]
+#[serde(untagged)]
+enum EmailVerified {
+	String(String),
+	Bool(bool),
+}
+
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct Claims {
 	pub iss: String,
@@ -23,7 +30,7 @@ pub struct Claims {
 	pub sub: String,
 	pub c_hash: String,
 	pub email: Option<String>,
-	pub email_verified: Option<String>,
+	pub email_verified: Option<EmailVerified>,
 	pub auth_time: u64,
 }
 
